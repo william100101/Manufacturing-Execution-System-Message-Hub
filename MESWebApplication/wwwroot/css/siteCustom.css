@@ -1,0 +1,183 @@
+﻿.LongXML {
+    max-height: 700px;
+    overflow-y: auto;
+}
+
+.AckXML {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.StatusXML {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.BiztalkAdminLongXML {
+    overflow-y: auto;
+}
+
+
+.EditXML {
+    resize: none;
+    height: 700px;
+    overflow-y: auto;
+    width: 700px;
+    font-size: 14px;
+}
+
+.blazored-custom-modal {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 90vh;
+    background-color: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #fff;
+    padding: 0.5rem;
+    z-index: 102;
+    box-shadow: 0 2px 2px rgba(0,0,0,.75);
+}
+
+td.nowrap {
+    white-space: nowrap;
+}
+th.nowrap {
+    white-space: nowrap;
+}
+
+
+.condenseFromBiz{
+    width: 900px;
+}
+
+
+.success {
+    background: #1cc88a;
+}
+
+.error {
+    border: 1px solid;
+    border-color: #cd0a0a;
+    color: #cd0a0a;
+    background: #fef1ec;
+}
+
+.ack_status {
+    font-size: 20px;
+    text-align: center;
+}
+.invisible {
+    position: absolute;
+    left: -9999px;
+}
+
+.emailbody {
+    width:300px;
+    height:300px;
+}
+
+.border-overview {
+    border-width:1px; 
+    border-style:solid; 
+    border-color:black;
+}
+
+.table-condensed > thead > tr > th,
+.table-condensed > tbody > tr > th,
+.table-condensed > tfoot > tr > th,
+.table-condensed > thead > tr > td,
+.table-condensed > tbody > tr > td,
+.table-condensed > tfoot > tr > td {
+    padding: 2px;
+}
+
+.tr:nth-child(even) {
+    background-color: #cd0a0a;
+}
+modal-content {
+    border-radius: 6px 6px 0 0 !important;
+    -webkit-border-radius: 6px 6px 0 0 !important;
+    -moz-border-radius: 6px 6px 0 0 !important;
+}
+
+.modal-header .close {
+    background-color: aqua !important;
+    opacity: 1 !important;
+}
+/*.modal-backdrop {
+    background-color: lightblue;
+}*/
+.modal-dialog {
+    border-radius: 6px 6px 0 0 !important;
+    -webkit-border-radius: 6px 6px 0 0 !important;
+    -moz-border-radius: 6px 6px 0 0 !important;
+    background-color: lightblue !important;
+}
+
+table.test {
+    border: 2px solid black; 
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+table.test tr {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+table.test th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+    table.test tr:nth-child(even) {
+        background-color: #f2f2f2;
+        }
+.dotRed {
+    height: 25px;
+    width: 25px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dotGreen {
+    height: 25px;
+    width: 25px;
+    background-color: green;
+    border-radius: 50%;
+    display: inline-block;
+}
+/*li {
+    background: transparent;
+}
+
+li:nth-child(odd) {
+    background: #d6d5d5;*/
+}
+
+th {
+    white-space: nowrap;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+
+.highlightText {
+    background-color: yellow;
+    color: black;
+}
+
+.dropdown-item-purple {
+    display: block;
+    width: 100%;
+    clear: both;
+    /*
+    For `<button>`s padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+    */
+    font-weight: $font-weight-normal;
+    background: #1C6EA4;
+    color: #FFFFFF;
+    text-align: inherit;
+    border-radius: 0%; 
+}

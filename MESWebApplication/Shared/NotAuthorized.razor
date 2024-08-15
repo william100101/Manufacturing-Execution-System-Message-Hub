@@ -1,0 +1,11 @@
+﻿@page "/notauthorized/{userid}"
+@layout EmptyLayout
+<h1>Not Authorized</h1>
+<h2>UserId @userid is not authorized to use this application.  Please submit a service now request if you would like access to http://BTEDashboardPrd.</h2>
+
+
+@code {
+    [Parameter]
+    public string userid { get; set; }
+
+}

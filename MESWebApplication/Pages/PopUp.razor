@@ -1,0 +1,20 @@
+﻿@inject IModalService Modal
+
+<h3>@title</h3>
+
+<p>@body</p>
+
+@code {
+    [CascadingParameter] ModalParameters Parameters { get; set; }
+
+    //[Parameter]
+    public string title { get; set; }
+
+    // [Parameter]
+    public string body { get; set; }
+
+    protected override void OnInitialized()
+    {
+        body = Parameters.Get<string>("body");
+    }
+}

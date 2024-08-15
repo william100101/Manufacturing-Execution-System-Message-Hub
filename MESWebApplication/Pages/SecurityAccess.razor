@@ -1,0 +1,34 @@
+﻿@using System.Security.Claims;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (user.Identity.IsAuthenticated)
+{
+    <label>@user.Identity.Name</label>
+    <br />
+    <label>Resubmit Access @user.IsInRole("G_AL01_AthensMessages_Resubmit").ToString()</label>
+    <br />
+    <label>Madeup Access @user.IsInRole("xxx").ToString()</label>
+    @*<br />
+    <hr />
+    <h3>Claims</h3>
+    @foreach (var claim in user.Claims)
+    {
+        string claimLabel = $"Type: {claim.Type}   Value:{claim.Value}<br>";
+        <label>@claimLabel</label>
+    }*@
+}
+
+@code {
+    ClaimsPrincipal user = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await EvalUserSecurity();
+    }
+
+    private async Task EvalUserSecurity()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+    }
+}

@@ -1,0 +1,70 @@
+﻿@using Microsoft.Extensions.Hosting
+@using System.Runtime.InteropServices
+@using System.Reflection;
+
+@inject IHostEnvironment environment
+@inject IConfiguration config
+
+@page "/About"
+<br />
+<h4>Server Platform: @OperatingSystem</h4>
+<h4>Framework Version: @FrameworkVersion</h4>
+<h4>Environment Version: @EnvironmentVersion</h4>
+<h4>Build:          @version.ToString()</h4>
+<h4>Environment:    @environment.EnvironmentName</h4>
+<br />
+<h4>Melt Connection: @MeltConnection</h4>
+<h4>ESR Connection: @ESRConnection</h4>
+<h4>NDT Connection: @NDTConnection</h4>
+<h4>SX32 Connection: @SX32Connection</h4>
+<h4>Bar Processing Connection: @BarProcessingConnection</h4>
+<h4>Vertical Annealing Connection: @VerticalAnnealingConnection</h4>
+<h4>4500 Ton Press Connection: @_4500TonPressConnection</h4>
+<h4>Wet Grinder Connection: @WetGrinderConnection</h4>
+
+<br />
+
+<table class="table">
+    <tr>
+        <td>
+
+        </td>
+    </tr>
+</table>
+<div>
+    To request access to the dashboard website, enter a <a href="https://carpenter.service-now.com/">Service Now</a> request to have a user added to the "G_MES_MsgHub_Users" group in Active Directory.
+</div>
+@code {
+
+    private Version version { get; set; }
+    private string MessageHubConnection { get; set; }
+    private string MeltConnection { get; set; }
+    private string ESRConnection { get; set; }
+    private string NDTConnection { get; set; }
+    private string VerticalAnnealingConnection { get; set; }
+    private string _4500TonPressConnection { get; set; }
+    private string BarProcessingConnection { get; set; }
+    private string SX32Connection { get; set; }
+    private string WetGrinderConnection { get; set; }
+    private string OperatingSystem { get; set; }
+    private string FrameworkVersion { get; set; }
+    private string EnvironmentVersion { get; set; }
+    protected override void OnInitialized()
+    {
+        version = Assembly.GetEntryAssembly().GetName().Version;
+        MessageHubConnection = config.GetConnectionString("MessageHubConnection");
+        MeltConnection = config.GetConnectionString("MeltConnection");
+        ESRConnection = config.GetConnectionString("ESRConnection");
+        NDTConnection = config.GetConnectionString("NDTConnection");
+        SX32Connection = config.GetConnectionString("SX32Connection");
+        _4500TonPressConnection = config.GetConnectionString("_4500TonPressConnection");
+        BarProcessingConnection = config.GetConnectionString("BarProcessingConnection");
+        VerticalAnnealingConnection = config.GetConnectionString("VerticalAnnealingConnection");
+        WetGrinderConnection = config.GetConnectionString("WetGrinderConnection");
+
+        OperatingSystem = $"{RuntimeInformation.OSDescription}  {RuntimeInformation.OSArchitecture}";
+        FrameworkVersion = RuntimeInformation.FrameworkDescription;
+        EnvironmentVersion = Environment.Version.ToString();
+    }
+
+}

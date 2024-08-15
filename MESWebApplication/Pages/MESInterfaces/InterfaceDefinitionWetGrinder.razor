@@ -1,0 +1,99 @@
+﻿@inject MessageHubServiceWetGrinder MessageHubServiceWetGrinder
+@page "/InterfaceDefinitionWetGrinder"
+<h3>Wet Grinder</h3>
+
+<div>
+    <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            From Biz
+        </button>
+        <div class="dropdown-menu">
+            @foreach (var x in MessageHubServiceWetGrinder.MasterData.Interfaces.Where(x => x.FromBiz == true).ToList())
+            {
+                <a class="dropdown-item" @onclick="@(() => SetInterfaceCondition(x))">@x.Description</a>
+            }
+        </div>
+    </div>
+    <div class="btn-group" role="group">
+        <button id="btnGroupDrop2" type="button" class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            To Biz
+        </button>
+        <div class="dropdown-menu">
+            @foreach (var x in MessageHubServiceWetGrinder.MasterData.Interfaces.Where(x => x.FromBiz == false).ToList())
+            {
+                <a class="dropdown-item" @onclick="@(() => SetInterfaceCondition(x))">@x.Description</a>
+            }
+        </div>
+    </div>
+    <button @onclick="@(() => CurrentInterface = null)">All Interfaces</button>
+    <text>Start Date</text>
+    <input @bind="StartDate" type="date" />
+    <text>End Date</text>
+    <input @bind="EndDate" type="date" />
+    <input @bind="SearchConditions" placeholder="Containing Text" />
+    <button @onclick="@(() => GetMessages())">RELOAD</button>
+</div>
+
+<br />
+<br />
+@if (messages != null)
+{
+    //instantiated as MessageList here
+    <MessageListWetGrinder Messages="@messages" 
+                 Title="@SelectedInterface"
+                 ShowErrorColumn="true"
+                 OnRefresh="@Refresh" />
+}
+
+@code {
+
+    private string SelectedInterface = "";
+    private string SelectedMessageName = "";
+
+    DateTime StartDate = DateTime.Now.Date;
+    DateTime EndDate = DateTime.Now.Date;
+    Interface? CurrentInterface = null;
+    string SearchConditions;
+
+    List<InterfaceMessageModel> messages = null;
+
+    protected override void OnInitialized()
+    {
+    }
+
+    void GetMessages()
+    {
+
+        if (CurrentInterface == null)
+        {
+            messages = MessageHubServiceWetGrinder.GetLatestBoth(StartDate, EndDate);
+            if (SearchConditions.HasValue())
+            {
+                messages = messages.Where(x => x.Message.Contains(SearchConditions)).ToList();
+            }
+            messages = messages.OrderByDescending(m => m.QueuedTime).ToList();
+        }
+        else
+        {
+            if (CurrentInterface.FromBiz != null && CurrentInterface.FromBiz == true)
+            {
+                messages = MessageHubServiceWetGrinder.GetLatestFromBiz(CurrentInterface.MessageName, StartDate, EndDate, SearchConditions).GetInterfaceMessageModel();
+            }
+            else
+            {
+                messages = MessageHubServiceWetGrinder.GetLatestToBiz(CurrentInterface.MessageName, StartDate, EndDate, SearchConditions).GetInterfaceMessageModel();
+            }
+        }
+
+    }
+
+
+    void SetInterfaceCondition(Interface SelectedInterface)
+    {
+        CurrentInterface = SelectedInterface;
+    }
+
+    void Refresh(bool value)
+    {
+    }
+}

@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageHub", "MessageHub\MessageHub.csproj", "{C4619822-5C07-4BD6-B999-3EC309D3D9A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DD2E0F7-BF0B-43C5-9688-54F75A44A431}"
+	ProjectSection(SolutionItems) = preProject
+		Deployment Environment Details.docx = Deployment Environment Details.docx
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MESWebApplication", "MESWebApplication\MESWebApplication.csproj", "{368A7D06-C50E-4EBF-A605-3689C1E21440}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4619822-5C07-4BD6-B999-3EC309D3D9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4619822-5C07-4BD6-B999-3EC309D3D9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4619822-5C07-4BD6-B999-3EC309D3D9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4619822-5C07-4BD6-B999-3EC309D3D9A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{368A7D06-C50E-4EBF-A605-3689C1E21440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368A7D06-C50E-4EBF-A605-3689C1E21440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368A7D06-C50E-4EBF-A605-3689C1E21440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368A7D06-C50E-4EBF-A605-3689C1E21440}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D43029B9-3C67-41BD-8E6F-CA91FB07A534}
+	EndGlobalSection
+EndGlobal

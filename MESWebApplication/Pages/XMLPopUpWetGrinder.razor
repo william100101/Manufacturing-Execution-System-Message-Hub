@@ -1,0 +1,220 @@
+﻿@using System.IO
+@using System.Configuration;
+@inject MessageHubServiceWetGrinder messageHubService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JS
+@inject IConfiguration config
+
+<TelerikWindow MinHeight="45vw"
+               MinWidth="150vh"
+               Modal="true"
+               Visible="@IsModalVisible"
+               VisibleChanged="@VisibleChangedHandler"
+               CloseOnOverlayClick="true">
+    <WindowTitle>
+        <h3>@title</h3>
+    </WindowTitle>
+    <WindowContent>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" @onclick="@Download">Download</a>
+                            @if (message.MessageSource == MessageSource.ToBiz){
+                                <a class="dropdown-item" @onclick="@Resend">Resend</a>
+                                <a class="dropdown-item" @onclick="@Edit">Edit</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-right">
+                        @if (EditMode)
+                        {
+                            <button type="button" class="btn btn-success btn-sm" @onclick="@SubmitModified">Submit Modified</button>
+                            <button type="button" class="btn btn-danger btn-sm" @onclick="@CancelEditing">Cancel</button>
+                        }
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="LongXML">
+                        @PrettyMessage
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (EditMode)
+                    {
+                        <div>
+                            <textarea class="EditXML" @bind="@newxml"></textarea>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (Modified)
+                        {
+                            <div class="alert alert-success">@ModifiedStatus - @DateTime.Now.ToShortTimeString()</div>
+                        }
+                        else
+                        {
+                            @if (ack.HasValue())
+                            {
+                                <h3>Acknowledgement @ackid</h3>
+                                <div class="AckXML">@PrettyAck</div>
+                                <br />
+                            }
+                            @if (status.HasValue())
+                            {
+                                <h3>Status @statusid</h3>
+                                <div div class="StatusXML">@PrettyStatus</div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </WindowContent>
+    <WindowActions>
+        <WindowAction Name="Close" />
+    </WindowActions>
+</TelerikWindow>
+@code {
+    [Parameter] public EventCallback<string> OnSubmitModified { get; set; }
+    [CascadingParameter] private Task<AuthenticationState> AuthStateTask { get; set; }
+
+    private bool isSubmitter = false;
+    private string userid = "";
+
+    [Parameter] public string xml { get; set; }
+    private string rawxml { get; set; }
+    [Parameter] public string ack { get; set; }
+    [Parameter] public string ackid { get; set; }
+    [Parameter] public string status { get; set; }
+    [Parameter] public string statusid { get; set; }
+    [Parameter] public string fileName { get; set; }
+    [Parameter] public string title { get; set; }
+    [Parameter] public InterfaceMessageModel message { get; set; }
+    private bool Modified = false;
+
+    private bool EditMode = false;
+    private string newxml = "";
+    private string ModifiedStatus = "";
+
+    private RenderFragment PrettyMessage;
+    private RenderFragment PrettyAck;
+    private RenderFragment PrettyStatus;
+    private int counter = 0;
+
+    [Parameter]
+    public bool IsModalVisible { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> OnVisibleChanged { get; set; }
+
+    void VisibleChangedHandler(bool currVisible)
+    {
+        OnVisibleChanged.InvokeAsync(currVisible);
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        userid = user.Identity.Name;
+        userid = userid.Replace("CTNTMASTER\\", "");
+
+        string authorizedSubmitterGroupName = config["AuthorizedSubmitterGroupName"];
+        isSubmitter = MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName);
+
+        PrettyPrint();
+    }
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void PrettyPrint()
+    {
+        rawxml = xml;
+
+        if (xml.HasValue())
+            PrettyMessage = SetPrettyPrintXML(xml);
+
+        if (ack.HasValue())
+        {
+            PrettyAck = SetPrettyPrintXML(ack);
+        }
+
+        if (status.HasValue())
+        {
+            PrettyStatus = SetPrettyPrintXML(status);
+        }
+    }
+
+    private RenderFragment SetPrettyPrintXML(string xml)
+    {
+        return builder =>
+        {
+            builder.OpenElement(1, "pre");
+            builder.AddAttribute(2, "class", $"prettyprint");
+            builder.AddContent(3, xml.FormatXML());
+            builder.CloseElement();
+        };
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        JS.PrettyPrint();
+    }
+
+    private async Task Download()
+    {
+        var stream = new MemoryStream();
+        var writer = new StreamWriter(stream);
+        writer.Write(rawxml);
+        writer.Flush();
+        stream.Position = 0;
+
+        using var streamRef = new DotNetStreamReference(stream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef); 
+    }
+
+    public void Resend()
+    {
+        message.ResubmitUserId = userid;
+        bool rc = Helper.ReSendReading(messageHubService, message);
+        Modified = true;
+        ModifiedStatus = "Existing Message Resent";
+    }
+
+    private void Edit()
+    {
+        EditMode = true;
+        newxml = rawxml.IndentXML();
+    }
+
+    private void CancelEditing()
+    {
+        newxml = "";
+        EditMode = false;
+        Modified = false;
+    }
+
+    private void SubmitModified()
+    {
+        message.ResubmitUserId = userid;
+        var newMessage = messageHubService.SubmitModifiedReading(message, newxml);
+        rawxml = newMessage.Message;
+        xml = newMessage.Message;
+        ModifiedStatus = "Modified Message Submitted";
+        SetPrettyPrintXML(xml);
+        EditMode = false;
+        Modified = true;
+    }
+}

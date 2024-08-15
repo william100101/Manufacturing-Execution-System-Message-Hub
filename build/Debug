@@ -1,0 +1,286 @@
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 460.07 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 460.07 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 476.85 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  MessageHub -> c:\repos\SAPDashboard\MessageHub\bin\Debug\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.92
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 39.23 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 39.22 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 39.22 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  MessageHub -> c:\repos\SAPDashboard\MessageHub\bin\Debug\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.03
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 34.73 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 34.7 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 34.71 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  MessageHub -> c:\repos\SAPDashboard\MessageHub\bin\Debug\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.97
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 34.84 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 34.87 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 34.84 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  MessageHub -> c:\repos\SAPDashboard\MessageHub\bin\Debug\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> c:\repos\SAPDashboard\SAPDashboard\bin\Debug\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.27
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 397.1 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 397.1 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 397.13 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+SAPMessageMonitorService.cs(117,30): warning CS0168: The variable 'ex' is declared but never used [c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj]
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+
+Build succeeded.
+
+SAPMessageMonitorService.cs(117,30): warning CS0168: The variable 'ex' is declared but never used [c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.59
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 34.62 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 34.59 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 34.59 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.27
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 66.37 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 66.37 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 66.37 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.68
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 82.97 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 82.97 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 82.97 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.76
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 37.59 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 37.59 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 37.59 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.92
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 40.43 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 40.47 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 40.47 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+Shared\Search.razor(42,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\InterfaceDefinition.razor(78,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\TabMaterialNumber.razor(34,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+CSC : warning CS8034: Unable to load Analyzer assembly C:\Users\u12567\.nuget\packages\microsoft.aspnetcore.components.analyzers\3.0.0\analyzers\dotnet\cs\Microsoft.AspNetCore.Components.Analyzers.dll : Assembly with same name is already loaded [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\Search.razor(42,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\InterfaceDefinition.razor(78,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\TabMaterialNumber.razor(34,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkHostInstancesStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkHostInstancesStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(23,12): warning CS0414: The field 'MainLayout.userid' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowStats.razor(22,22): warning CS0414: The field 'ShowStats.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(52,12): warning CS0414: The field 'OverviewTabs.tosaptablestab' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(60,41): warning CS0414: The field 'OverviewTabs.messageSubset' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkStatus.razor(58,18): warning CS0414: The field 'ShowBizTalkStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\XMLPopUp.razor(89,17): warning CS0414: The field 'XMLPopUp.counter' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkBTEMsgHubStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkBTEMsgHubStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(51,12): warning CS0414: The field 'OverviewTabs.fromsaptablestab' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(30,9): warning CS0414: The field 'MainLayout.count' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkSpecProjectStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkSpecProjectStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowQueueDepth.razor(38,18): warning CS0414: The field 'ShowQueueDepth.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(22,10): warning CS0414: The field 'MainLayout.authorized' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+CSC : warning CS8034: Unable to load Analyzer assembly C:\Users\u12567\.nuget\packages\microsoft.aspnetcore.components.analyzers\3.0.0\analyzers\dotnet\cs\Microsoft.AspNetCore.Components.Analyzers.dll : Assembly with same name is already loaded [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+
+Shared\Search.razor(42,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\InterfaceDefinition.razor(78,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\TabMaterialNumber.razor(34,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+CSC : warning CS8034: Unable to load Analyzer assembly C:\Users\u12567\.nuget\packages\microsoft.aspnetcore.components.analyzers\3.0.0\analyzers\dotnet\cs\Microsoft.AspNetCore.Components.Analyzers.dll : Assembly with same name is already loaded [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\Search.razor(42,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\InterfaceDefinition.razor(78,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\TabMaterialNumber.razor(34,16): warning CS0219: The variable 'x' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkHostInstancesStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkHostInstancesStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(23,12): warning CS0414: The field 'MainLayout.userid' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowStats.razor(22,22): warning CS0414: The field 'ShowStats.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(52,12): warning CS0414: The field 'OverviewTabs.tosaptablestab' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(60,41): warning CS0414: The field 'OverviewTabs.messageSubset' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkStatus.razor(58,18): warning CS0414: The field 'ShowBizTalkStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\XMLPopUp.razor(89,17): warning CS0414: The field 'XMLPopUp.counter' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkBTEMsgHubStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkBTEMsgHubStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\OverviewTabs.razor(51,12): warning CS0414: The field 'OverviewTabs.fromsaptablestab' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(30,9): warning CS0414: The field 'MainLayout.count' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowBizTalkSpecProjectStatus.razor(38,18): warning CS0414: The field 'ShowBizTalkSpecProjectStatus.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Pages\ShowQueueDepth.razor(38,18): warning CS0414: The field 'ShowQueueDepth.LoadingStatus' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+Shared\MainLayout.razor(22,10): warning CS0414: The field 'MainLayout.authorized' is assigned but its value is never used [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+CSC : warning CS8034: Unable to load Analyzer assembly C:\Users\u12567\.nuget\packages\microsoft.aspnetcore.components.analyzers\3.0.0\analyzers\dotnet\cs\Microsoft.AspNetCore.Components.Analyzers.dll : Assembly with same name is already loaded [c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj]
+    21 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:09.78
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 36.44 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  Restore completed in 36.46 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 36.44 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.00
+
+
+Building Solution: c:\repos\SAPDashboard\SAPDashboard.sln
+
+Microsoft (R) Build Engine version 16.4.0+e901037fe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 44.9 ms for c:\repos\SAPDashboard\SAPMessageMonitor\SAPMessageMonitor.csproj.
+  Restore completed in 44.91 ms for c:\repos\SAPDashboard\MessageHub\MessageHub.csproj.
+  Restore completed in 44.92 ms for c:\repos\SAPDashboard\SAPDashboard\SAPDashboard.csproj.
+  MessageHub -> C:\repos\SAPDashboard\output\netcoreapp3.1\MessageHub.dll
+  SAPMessageMonitor -> c:\repos\SAPDashboard\SAPMessageMonitor\bin\Debug\netcoreapp3.1\SAPMessageMonitor.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.dll
+  SAPDashboard -> C:\repos\SAPDashboard\output\netcoreapp3.1\SAPDashboard.Views.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.11

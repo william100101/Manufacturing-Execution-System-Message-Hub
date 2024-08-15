@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="_content/Blazored.Modal" Path="C:\Users\u12567\.nuget\packages\blazored.modal\2.3.0\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/BlazorFileSaver" Path="C:\Users\u12567\.nuget\packages\blazorfilesaver\3.0.1\build\..\staticwebassets\" />
+</StaticWebAssets>

@@ -1,0 +1,152 @@
+﻿@using MESWebApplication.Models;
+
+@if (LogErrors != null && LogErrors.Count > 0)
+{
+    var distinctMessageList = LogErrors.DistinctBy(x => x.MessageNames).Select(x => x.MessageNames).ToList();
+    <div class="container-fluid">
+        <div class="row">
+          
+            @if (MessageNameFilter == "all")
+            {
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Results: @LogErrors.Count</h4>
+            }
+            else
+            {
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Results: @MessageNameFilter   @filteredResults.Count of @LogErrors.Count</h4>
+            }
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-auto">
+                <table class="blueTable">
+                    <thead>
+                        <tr>
+                            <th>Last Modified</th>
+                            <th>Thread</th>
+                            <th>
+                                @if (distinctMessageList != null)
+                                {
+                                    <select class="selectpicker" @bind="@MessageNameFilter">
+                                        <option value="all">-- Show all Message Types --</option>
+                                        @foreach (string message in distinctMessageList)
+                                        {
+                                            <option value=@message>@message</option>
+                                        }
+                                    </select>
+                                }
+                            </th>
+                            <th>Complete</th>
+                            <th>Lines</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var LogError in filteredResults)
+                        {
+                            <tr>
+                                <td class="nowrap">@LogError.TimeStamp</td>
+                                <td>@LogError.Thread</td>
+                                <td>@LogError.MessageNames</td>
+                                <td>
+                                    @if (LogError.Complete)
+                                    {
+                                        <span class="ack_status text-success fas fa-check-circle"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ack_status text-danger fas fa-times-circle"></span>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn-info" @onclick="@(() => ShowLines(LogError))">
+                                        @LogError.Lines.Count
+                                    </button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-auto">&nbsp;</div>
+            <div class="col" style="overflow-x: auto;">
+                @if (_logError != null)
+                {
+                    <table class="blueTable">
+                        <thead>
+                            <tr>
+                                @*<th></th>*@
+                                <th>
+                                    <span>@_logError.MessageNames (@_logError.Thread)</span>
+                                    <span style="float:right">@_logError.FileName</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int rowCount = 0;
+                                foreach (string line in _logError.Lines)
+                                {
+                                    rowCount += 1;
+                                    string modifiedLine = line;
+                                    foreach (string keyWord in KeyWords)
+                                    {
+                                        modifiedLine = modifiedLine.Replace(keyWord, $"<span class='validation-message'>{keyWord}</span>");
+                                    }
+                                    <tr>
+                                        @*<td>@rowCount</td>*@
+                                        <td>@((MarkupString) modifiedLine)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter] public List<LogError> LogErrors { get; set; }
+    [Parameter] public List<string> KeyWords { get; set; }
+
+    LogError _logError { get; set; }
+    private string _MessageNameFilter;
+    private List<LogError> filteredResults;
+
+    public string MessageNameFilter
+    {
+        get { return _MessageNameFilter; }
+        set
+        {
+            _MessageNameFilter = value;
+            FilterMessages();
+        }
+    }
+    protected override void OnParametersSet()
+    {
+        filteredResults = LogErrors;
+        _MessageNameFilter = "all";
+        _logError = null;
+    }
+
+    private void FilterMessages()
+    {
+        if (MessageNameFilter == "all")
+        {
+            filteredResults = LogErrors;
+        }
+        else
+        {
+            filteredResults = LogErrors.Where(x => x.MessageNames == _MessageNameFilter).ToList();
+        }
+    }
+
+    void ShowLines(LogError logError)
+    {
+        _logError = logError;
+    }
+        }

@@ -1,0 +1,67 @@
+﻿@using Microsoft.Extensions.Hosting
+@layout TelerikLayout
+@inherits LayoutComponentBase
+@inject IConfiguration Config
+@inject NavigationManager NavManager
+@*@inject MessageHubServiceMelt MessageHubService *@
+
+@inject IHostEnvironment environment
+<PageTitle>@PageTitle</PageTitle>
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">          
+            <TopDisplay />
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>
+@code {
+    bool authorized = false;
+    string userid = "";
+    string resultMessage = "User is not Authorized";
+    string authorizedUserGroup => Config["AuthorizedUsersGroupName"];
+    string PageTitle = "MES MessageTracker";
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthStateTask { get; set; }
+
+
+
+    public string superUser = "default";
+    int count = 0;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if (!environment.IsProduction())
+        {
+            PageTitle = $"MES MessageTracker - {environment.EnvironmentName}";
+        }
+        var user = (await AuthStateTask).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            if (user.IsInGroup(authorizedUserGroup))
+            {
+                authorized = true;
+                resultMessage = user.Identity.Name + " is Authorized";
+                //MessageHubService.SaveLogon(lh);
+            }
+            else
+            {
+                //MessageHubService.SaveLogon(lh);
+                string username = user.Identity.Name;
+                username = username.Replace("CTNTMASTER\\", "");
+                NavManager.NavigateTo("/notauthorized/" + username, true);
+            }
+        }
+        else
+        { }
+    }
+}

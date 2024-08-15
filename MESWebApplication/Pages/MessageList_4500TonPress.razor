@@ -1,0 +1,349 @@
+﻿@using MESWebApplication.Models;
+@using System.Xml;
+@inject MessageHubService_4500TonPress MessageHubService_4500TonPress
+
+@page "/dashboard_4500TonPress"
+<XMLPopUp_4500TonPress ack="@ack"
+    ackid="@ackid"
+    status="@status"
+    statusid="@statusid"
+    xml="@xml"
+    title="@title_detail"
+    IsModalVisible=@IsModalVisible
+    OnVisibleChanged="@VisibleChanged"
+    message=@modalMessage>
+</XMLPopUp_4500TonPress>
+@if (Messages != null && !ModelReady)
+{
+    <div class="alert alert-danger">
+        Loading @Title  ...
+    </div>
+}
+@if (Messages != null && ModelReady)
+{
+    <h5>@Title</h5>
+    <div class="condenseFromBiz">
+        <table class="blueTable">
+            <thead>
+                <tr>
+                    <!--columns-->
+                    <th>Id</th>
+                    @if (ShowMessageName)
+                    {
+                        <th class="nowrap">Message</th>
+                    }
+                    <th>MessageName</th>
+                    <th>OrderNumber</th>
+                    <th>HeatNumber</th>
+
+                    <th>MessageStatusID</th>
+                    <th>Queued</th>
+                    <th>Processed</th>
+                    <th class="nowrap">L4TransactionId</th>
+                    <th>MainframeAck</th>
+                    <th>MainframeStatus</th>
+                    @if (ShowErrorColumn)
+                    {
+                        <th>Status Text</th>
+                    }
+                    <th>Resubmitted by</th>
+                    <th>PrevErrorDescription</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var message in Messages)
+                {
+
+                    bool ShowAckStatusValues = MessageHasAckStatus(message);
+                    MessageHub._4500TonPressModels.FromBiz status = null;
+                    string statusError = "";
+
+
+                    bool statusFound = false;
+                    bool ackFound = false;
+                    bool statusPass = false;
+
+                    if (ShowAckStatusValues)
+                    {
+                        // Not all messages send acks/and status
+                        ackFound = FoundAck(message.L4transactionId);
+                        status = GetMessageStatus(message);
+                        if (status != null)
+                        {
+                            statusFound = true;
+                            statusPass = Passed(status.Message);
+                            if (!statusPass)
+                                statusError = ErrorMessage(status.Message);
+                        }
+                    }
+
+                    <tr>
+                        <!--filling out table-->
+                        <td>
+                            <!--xml button-->
+                            <button class="btn-info" @onclick="@(() => ShowXML(message.Id))">
+                                @message.Id
+                            </button>
+                        </td>
+                        @if (ShowMessageName)
+                        {
+                            <td class="nowrap">@Helper.DecodeMessageName(MessageHubService_4500TonPress.MasterData.Interfaces, message.MessageName)</td>
+                        }
+
+                        <td>@message.MessageName</td>
+                        <td>@message.OrderNumber</td>
+                        <td>@message.HeatNumber</td>
+
+                        <td class="nowrap">
+                            @switch (message.MessageStateID)
+                            {
+                                case (int)MessageStateEnum.Failed:
+                                    <span class="ack_status text-danger fas fa-times-circle"></span>
+                                    break;
+                                default:
+                                    <span class="ack_status text-success fas fa-check-circle"></span>
+                                    break;
+                            }
+
+                        </td>
+
+                        <td class="nowrap">@message.QueuedTime.FormatDate()</td>
+                        <td class="nowrap">@message.ProcessedTime.FormatDate()</td>
+                        <td class="nowrap">@message.L4transactionId</td>
+                        @if (ShowAckStatusValues)
+                        {
+                            <td class="nowrap">
+                                @if (ackFound)
+                                {
+                                    <span class="ack_status text-success fas fa-check-circle"></span>
+                                }
+                                else
+                                {
+                                    <span class="ack_status text-danger fas fa-times-circle"></span>
+                                }
+                            </td>
+                            <td class="nowrap">
+                                @if (statusFound)
+                                {
+                                    <span class="ack_status text-success fas fa-check-circle"></span>
+                                }
+                                else
+                                {
+                                    <span class="ack_status text-danger fas fa-times-circle"></span>
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                        @if (ShowErrorColumn)
+                        {
+                            <td class="nowrap">
+                                @if (ShowAckStatusColumns)
+                                {
+                                    @statusError
+                                }
+                                else
+                                {
+                                    @message.ErrorDescription
+                                }
+                            </td>
+                        }
+                        <td class="nowrap">@message.ResubmitUserId</td>
+                        <td class="nowrap">@message.PrevErrorDescription</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter] public List<InterfaceMessageModel> Messages { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public bool ShowErrorColumn { get; set; }
+    [Parameter] public bool ShowMessageName { get; set; }
+    [Parameter] public EventCallback<InterfaceMessageModel> OnResend { get; set; }
+    [Parameter] public EventCallback<string> OnSubmitModified { get; set; }
+    [Parameter] public EventCallback<bool> OnRefresh { get; set; }
+
+    private InterfaceMessageModel modalMessage { get; set; }    
+
+
+    private List<MessageHub._4500TonPressModels.FromBiz> statuses2;
+    private List<MessageHub._4500TonPressModels.FromBiz> acks2;
+    private List<MessageHub._4500TonPressModels.ToBiz> FromBiz_OPSAcks { get; set; }
+    private List<MessageHub._4500TonPressModels.ToBiz> ToBiz_OPStatuses { get; set; }
+
+    public bool ShowAckStatusColumns { get; set; }
+    public bool OPSAckStatus { get; set; }
+
+    private List<string> MessageTypes { get; set; }
+    private List<string> FromSAP_OPSMessageTypes { get; set; }
+    private List<string> ToSAP_OPSMessageTypes { get; set; }
+
+    private bool ModelReady = false;
+    public bool IsModalVisible { get; set; } = false;
+
+    // For detail popup
+    private string ack { get; set; }
+    private string ackid { get; set; }
+    private string status { get; set; }
+    private string statusid { get; set; }
+    private string xml { get; set; }
+    private string title_detail { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ShowAckStatusColumns = false;
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ModelReady = false;
+        if (Messages != null && Messages.Count > 0)
+        {
+
+            var MessageTypes = Messages.DistinctBy(x => x.MessageName) 
+                       .Select(x => x.MessageName)
+                       .ToList();
+
+            foreach (var message in Messages)
+            {
+                ShowAckStatusColumns = MessageHubService_4500TonPress.MasterData.Interfaces.TargetResponseExpected(message.MessageName);
+                if (ShowAckStatusColumns)
+                    break;
+            }
+        }
+
+        if (ShowAckStatusColumns) 
+        {
+            List<string> transactionIds = Messages.Where(x => x.L4transactionId != null && x.L4transactionId.Trim() != "")
+                                                  .DistinctBy(x => x.L4transactionId)
+                                                  .Select(x => x.L4transactionId).ToList();
+            acks2 = MessageHubService_4500TonPress.GetAcksReading(transactionIds);                  
+            statuses2 = MessageHubService_4500TonPress.GetStatusesReading(transactionIds);
+
+
+        }
+
+
+        ModelReady = true;
+    }
+
+    public void ShowXML(int Id)
+    {
+        modalMessage = Messages.Where(x => x.Id == Id).FirstOrDefault();
+        xml = modalMessage.Message;
+        ack = "";
+        ackid = "";
+        status = "";
+        statusid = "";
+        string fileName = $"{modalMessage.Id.ToString()}.xml";
+
+        if (modalMessage.L4transactionId.HasValue() && modalMessage.MessageSource == MessageSource.ToBiz)
+        {
+            List<AckStatusReciver> AckStat = MessageHubService_4500TonPress.GetStatusAndAck(Id);
+            ack = AckStat[0].AckMessage;
+            ackid = AckStat[0].AckMessageFromBizID.ToString();
+
+            status = AckStat[0].StatusMessage;
+            statusid = AckStat[0].StatusMessageFromBizID.ToString();
+        }
+
+
+
+        title_detail = $"{Helper.DecodeMessageName(MessageHubService_4500TonPress.MasterData.Interfaces, modalMessage.MessageName)} {Id}";
+        IsModalVisible = true;
+    }
+
+    private void VisibleChanged(bool value)
+    {
+        IsModalVisible = value;
+        OnRefresh.InvokeAsync(true);
+    }
+
+
+    private string GetMessageStateName(int messageStateId)
+    {
+        string rc = "";
+        var messageState = MessageHubService_4500TonPress.MasterData.MessageStates.Where(x => x.MessageStateID == messageStateId).FirstOrDefault();
+
+        if (messageState != null)
+        {
+            rc = messageState.Name;
+        }
+        return rc;
+    }
+    
+    
+    private MessageHub._4500TonPressModels.FromBiz GetMessageStatus(InterfaceMessageModel message)
+    {
+        if (statuses2 == null || message == null || string.IsNullOrEmpty(message.L4transactionId))
+        {
+            return null;
+        }
+
+        MessageHub._4500TonPressModels.FromBiz fromBiz = statuses2
+            .Where(x => x != null && x.TransactionId != null && x.TransactionId.Equals(message.L4transactionId))
+            .OrderByDescending(x => x.FromBizId)
+            .FirstOrDefault();
+
+        return fromBiz;
+    }
+
+    private bool FoundAck(string transactionId)
+    {
+
+        var ack = acks2.Where(x => x != null && x.TransactionId != null && x.TransactionId.EndsWith(transactionId)).FirstOrDefault();
+
+        return (ack != null);
+    }
+
+    private bool Passed(string xml)
+    {
+        bool rc = false;
+
+        var xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xml);
+
+        var node = xmlDoc.SelectSingleNode("//Status");
+        if (node != null && node.InnerText != null)
+        {
+            rc = node.InnerText.Trim() == "P";
+        }
+
+        return rc;
+    }
+
+    private string ErrorMessage(string xml)
+    {
+        string rc = "";
+
+        var xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xml);
+
+        var node = xmlDoc.SelectSingleNode("//Text");
+        if (node != null && node.InnerText != null)
+        {
+            rc = node.InnerText;
+        }
+
+        return rc;
+    }
+
+
+    //running a like check instead of equality to cover different lock messages
+    private bool MessageHasAckStatus(InterfaceMessageModel model) 
+    {
+        bool rc = false;
+        var target = MessageHubService_4500TonPress.MasterData.Interfaces.Where(x => model.MessageName.Contains(x.MessageName)).FirstOrDefault();
+
+        rc = target.AckStatusCapable;
+        return rc;
+    }
+
+}

@@ -1,0 +1,24 @@
+﻿@inject IConfiguration config;
+
+@inject DatabaseSettingsService DatabaseSettingsService;
+
+
+Server: <b>@DatabaseSettingsService.ParseConnectionString(DatabaseSettingsService.ConnectionString)[0]</b> Database: <b>@DatabaseSettingsService.ParseConnectionString(DatabaseSettingsService.ConnectionString)[1]</b>
+
+@code {
+    private string server = "";
+    private string database = "";
+    private string connectionString = "";
+
+
+    protected override void OnInitialized()
+    {
+        DatabaseSettingsService.OnChange += StateHasChanged;
+    }
+
+
+    public void Dispose()
+    {
+        DatabaseSettingsService.OnChange -= StateHasChanged;
+    }
+}

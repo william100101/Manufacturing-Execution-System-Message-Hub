@@ -1,0 +1,117 @@
+﻿@inject IConfiguration config
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DatabaseSettingsService DatabaseSettingsService;
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">MES Interface Dashboard</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3 dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Applications
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:MeltConnection"]))' hidden=@HasMeltAccess class="dropdown-item-purple" href="InterfaceDefinitionMelt">Melt</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:ESRConnection"]))' hidden=@HasESRAccess class="dropdown-item-purple" href="InterfaceDefinitionESR">ESR</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:NDTConnection"]))' hidden=@HasNDTAccess class="dropdown-item-purple" href="InterfaceDefinitionNDT">NDT</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:_4500TonPressConnection"]))'  hidden=@Has4500TonPressAccess class="dropdown-item-purple" href="InterfaceDefinition_4500TonPress">4500TonPress</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:BarProcessingConnection"]))' hidden=@HasBarProcessingAccess class="dropdown-item-purple" href="InterfaceDefinitionBarProcessing">BarProcessing</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:SX32Connection"]))' hidden=@HasSX32Access class="dropdown-item-purple" href="InterfaceDefinitionSX32">SX32</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:VerticalAnnealingConnection"]))' hidden=@HasVerticalAnnealingAccess class="dropdown-item-purple" href="InterfaceDefinitionVerticalAnnealing">VerticalAnnealing</a>
+                <a @onclick='(()=>ChangeDatabaseSettings(config["ConnectionStrings:WetGrinderConnection"]))'hidden=@HasWetGrinderAccess class="dropdown-item-purple" href="InterfaceDefinitionWetGrinder">WetGrinder</a>
+            </div>
+        </li>       
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="About">
+                <span class="oi oi-list" aria-hidden="true"></span> About
+            </NavLink>
+        </li>
+
+    </ul>
+</div>
+
+@code {
+    bool collapseNavMenu = true;
+
+    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string userid = "";
+
+    //true means hidden
+    private bool HasMeltAccess = false;
+    private bool HasESRAccess = false;
+    private bool HasNDTAccess = false;
+    private bool Has4500TonPressAccess = false;
+    private bool HasBarProcessingAccess = false;
+    private bool HasSX32Access = false;
+    private bool HasVerticalAnnealingAccess = false;
+    private bool HasWetGrinderAccess = false;
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        userid = user.Identity.Name;
+        userid = userid.Replace("CTNTMASTER\\", "");
+
+        //Melt
+        string authorizedSubmitterGroupName = config["AccessGroups:MeltAccess"];
+        HasMeltAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+        
+        //ESR
+        authorizedSubmitterGroupName = config["AccessGroups:ESRAccess"];
+        HasESRAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //NDT
+        authorizedSubmitterGroupName = config["AccessGroups:NDTAccess"];
+        HasNDTAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //4500TonPress
+        authorizedSubmitterGroupName = config["AccessGroups:_4500TonPressAccess"];
+        Has4500TonPressAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //BarProcessing
+        authorizedSubmitterGroupName = config["AccessGroups:BarProcessingAccess"];
+        HasBarProcessingAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //SX32
+        authorizedSubmitterGroupName = config["AccessGroups:SX32Access"];
+        HasSX32Access = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //VerticalAnnealing
+        authorizedSubmitterGroupName = config["AccessGroups:VerticalAnnealingAccess"];
+
+        HasVerticalAnnealingAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+
+        //WetGrinder
+        authorizedSubmitterGroupName = config["AccessGroups:WetGrinderAccess"];
+        HasWetGrinderAccess = !(MESWebApplication.Authorization.Security.IsInGroup(user, authorizedSubmitterGroupName));
+    
+    }
+
+    protected override void OnInitialized()
+    {
+        DatabaseSettingsService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DatabaseSettingsService.OnChange -= StateHasChanged;
+    }
+
+
+    public void ChangeDatabaseSettings(string connectionString)
+    {
+        DatabaseSettingsService.ConnectionString = connectionString;
+    }
+}

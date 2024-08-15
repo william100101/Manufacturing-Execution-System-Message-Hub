@@ -1,0 +1,38 @@
+﻿@page "/"
+@*<Search />*@
+<MESWebApplication.Pages.StartingDisplay />
+@*<Debug />*@
+@*<SecurityAccess />*@
+
+@*<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name (@count)
+        <span style="color:red">@superUser</span>
+        <button @onclick="@CheckIfSuperUser">Check Authorization</button>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failure!</h1>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthStateTask { get; set; }
+
+    public string superUser = "default";
+    int count = 0;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var user = (await AuthStateTask).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            if (user.IsSuperUser())
+            {
+                superUser = "I am a super user";
+                count += 1;
+            }
+        }
+    }
+}*@

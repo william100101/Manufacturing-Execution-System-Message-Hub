@@ -1,0 +1,325 @@
+﻿@using SAPDashboard.Models;
+@using System.Xml;
+@inject MessageHubService MessageHubService
+@inject IModalService Modal
+@using Blazored.Modal;
+
+@*@page "/dashboard"*@
+@{ 
+    string s = Title;
+
+}
+<h5>@Title</h5>
+*@if (Messages != null)
+{
+    <h5>@Title</h5>
+    <div class="condenseFromBiz">
+        <table class="blueTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    @if (ShowMessageName)
+                    {
+                        <th class="nowrap">Message</th>
+                    }
+                    <th>Status</th>
+                    <th>Queued</th>
+                    <th>Processed</th>
+                    <th class="nowrap">Transaction Id</th>
+                    <th>Target</th>
+                    @if (ShowAckStatusColumns)
+                    {
+                        <th>Ack</th>
+                        <th>Status</th>
+                    }
+                    @if (ShowErrorColumn)
+                    {
+                        <th>Error</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var message in Messages)
+                {
+                    ToSAP status = null;
+                    string statusError = "";
+
+                    @if (ShowAckStatusColumns)
+                    {
+                        // We look for not only a status but a P in the status
+                        status = GetMessageStatus(message);
+                    }
+                    <tr>
+                        <td>
+                            <button class="btn-info" @onclick="@(() => ShowXML(message.Id))">
+                                @message.Id
+                            </button>
+                        </td>
+                        @if (ShowMessageName)
+                        {
+                            <td class="nowrap">@Helper.DecodeMessageName(interfaces, message.MessageName)</td>
+                        }
+                        <td class="nowrap">
+                            @if (ShowAckStatusColumns)
+                            {
+                                // We look for not only a status but a P in the status
+                                if (status == null)
+                                {
+
+                                    //  2/26/2020  Chris K.   Added check for the Message Source.
+                                    //  This issue was I was trying to display messages from ToSAP and FromSAP in the same MessageList.razor.
+                                    //  Because the FromSAP message was pulled first the ShowAckStatusColumns was set to true, therefore the rows pulled from ToSAP had this
+                                    //  same logic applied.  Since the ToSAP rows will not have an ACK/Result, this logic should not be applied.
+                                    if (message.MessageSource.Equals(MessageSource.FromSAP))
+                                    {
+                                        <span class="ack_status text-danger fas fa-times-circle"></span>
+                                        statusError = "Status not found";
+                                    }
+                                    else
+                                    {
+                                        <span class="ack_status text-success fas fa-check-circle"></span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Passed(status.Message))
+                                    {
+                                        <span class="ack_status text-success fas fa-check-circle"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ack_status text-danger fas fa-times-circle"></span>
+                                        statusError = ErrorMessage(status.Message);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //  No Status returned, must rely on whatever is inside the record
+                                switch (message.MessageStateID)
+                                {
+                                    case (int)MessageStateEnum.Success:
+                                        <span class="ack_status text-success fas fa-check-circle"></span>
+                                        break;
+                                    case (int)MessageStateEnum.Failed:
+                                        <span class="ack_status text-danger fas fa-times-circle"></span>
+                                        break;
+                                    default:
+                                        @GetMessageStateName(message.MessageStateID)
+                                        break;
+                                }
+                            }
+                        </td>
+                        <td class="nowrap">@message.QueuedTime.FormatDate()</td>
+                        <td class="nowrap">@message.ProcessedTime.FormatDate()</td>
+                        <td class="nowrap">@message.TransactionID</td>
+                        <td class="nowrap">@GetTargetSystemName(message.TargetSystemID)</td>
+                        @if (ShowAckStatusColumns)
+                        {
+                            <td class="nowrap">
+                                @if (FoundAck(message.TransactionID))
+                                {
+                                    <span class="ack_status text-success fas fa-check-circle"></span>
+                                }
+                                else
+                                {
+                                    <span class="ack_status text-danger fas fa-times-circle"></span>
+                                }
+                            </td>
+                            <td class="nowrap">
+                                @if (FoundStatus(message.TransactionID))
+                                {
+                                    <span class="ack_status text-success fas fa-check-circle"></span>
+                                }
+                                else
+                                {
+                                    <span class="ack_status text-danger fas fa-times-circle"></span>
+                                }
+                            </td>
+                        }
+                        @if (ShowErrorColumn)
+                        {
+                            <td class="nowrap">
+                                @if (ShowAckStatusColumns)
+                                {
+                                    @statusError;
+                                }
+                                else
+                                {
+                                    @message.ErrorDescription
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter] public List<InterfaceMessageModel> Messages { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public bool ShowErrorColumn { get; set; }
+    [Parameter] public bool ShowMessageName { get; set; }
+    [Parameter] public EventCallback<InterfaceMessageModel> OnResend { get; set; }
+    [Parameter] public EventCallback<string> OnSubmitModified { get; set; }
+    [Parameter] public EventCallback<bool> OnRefresh { get; set; }
+
+    private InterfaceMessageModel modalMessage { get; set; }    // Single messsage that the modal is displaying (could be FromSAP or ToSAP)
+    private List<ToSAP> acks;
+    private List<ToSAP> statuses;
+    private List<Interface> interfaces = null;
+
+    public bool ShowAckStatusColumns { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ShowAckStatusColumns = false;
+        interfaces = MessageHubService.GetInterfaces();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Messages != null && Messages.Count > 0)
+        {
+            ShowAckStatusColumns = MessageHubService.MasterData.InterfaceTargets.TargetResponseExpected(Messages[0].MessageName, Messages[0].TargetSystemID);
+        }
+
+        if (ShowAckStatusColumns)
+        {
+            List<string> transactionIds = Messages.Where(x => x.TransactionID != null).DistinctBy(x => x.TransactionID).Select(x => x.TransactionID).ToList();
+            acks = MessageHubService.GetAcks(transactionIds);
+            statuses = MessageHubService.GetStatuses(transactionIds);
+        }
+    }
+
+    public void ShowXML(int Id)
+    {
+        // Showing a modal xml with xml, ack and status if applicable
+        // This is in memory so just find it by Id
+        modalMessage = Messages.Where(x => x.Id == Id).FirstOrDefault();
+        string xml = modalMessage.Message;
+        string ack = "";
+        string status = "";
+        string fileName = $"{modalMessage.Id.ToString()}.xml";
+
+        if (modalMessage.TransactionID.HasValue())
+        {
+            fileName = $"{modalMessage.Id.ToString()}_{modalMessage.TransactionID}.xml";
+        }
+        var parameters = new ModalParameters();
+        parameters.Add("xml", xml);
+        parameters.Add("fileName", fileName);
+        // Check to see if ack and status exist
+
+        if (modalMessage.TransactionID.HasValue())
+        {
+            List<ToSAP> list = MessageHubService.GetToBizTransactions(modalMessage.TransactionID);
+            List<ToSAP> ackMessages = list.Where(x => x.TransactionID.EndsWith(modalMessage.TransactionID) && x.MessageName == MessageHub.Enums.MainframeAck).OrderByDescending(x => x.ToSAPID).ToList();
+            if (ackMessages.Count >= 1)
+            {
+                ack = ackMessages[0].Message;
+            }
+
+
+            List<ToSAP> statusMessages = list.Where(x => x.TransactionID.EndsWith(modalMessage.TransactionID) && x.MessageName == MessageHub.Enums.MainframeStatus).OrderByDescending(x => x.ToSAPID).ToList();
+            if (statusMessages.Count >= 1)
+            {
+                status = statusMessages[0].Message;
+            }
+        }
+
+        parameters.Add("ack", ack);
+        parameters.Add("status", status);
+        parameters.Add("message", modalMessage);
+
+        string title = $"{Helper.DecodeMessageName(interfaces, modalMessage.MessageName)} {Id}";
+        //var options = new ModalOptions() { Style = "blazored-custom-modal" };
+        //Modal.OnClose += ModalClosed;
+        //Modal.Show(title, typeof(XMLPopUp), parameters, options);
+        //Modal.Show(title);
+        Modal.Show(typeof(XMLPopUp), title);
+    }
+
+    private string GetTargetSystemName(int targetSystemID)
+    {
+        string rc = "";
+        var target = MessageHubService.MasterData.TargetSystems.Where(x => x.TargetSystemID == targetSystemID).FirstOrDefault();
+
+        if (target != null)
+        {
+            rc = target.Description;
+        }
+        return rc;
+    }
+
+    private string GetMessageStateName(int messageStateId)
+    {
+        string rc = "";
+        var messageState = MessageHubService.MasterData.MessageStates.Where(x => x.MessageStateID == messageStateId).FirstOrDefault();
+
+        if (messageState != null)
+        {
+            rc = messageState.Name;
+        }
+        return rc;
+    }
+
+    private ToSAP GetMessageStatus(InterfaceMessageModel message)
+    {
+        ToSAP toSAP = statuses.Where(x => x.TransactionID.Equals(message.TransactionID)).OrderByDescending(x => x.ToSAPID).FirstOrDefault();
+        return toSAP;
+        //   return statuses.Where(x => x.TransactionID.EndsWith(message.TransactionID)).OrderByDescending(x => x.ToSAPID).FirstOrDefault();
+    }
+
+    private bool FoundAck(string transactionId)
+    {
+        var ack = acks.Where(x => x.TransactionID.EndsWith(transactionId)).FirstOrDefault();
+        return (ack != null);
+    }
+    private bool FoundStatus(string transactionId)
+    {
+        var status = statuses.Where(x => x.TransactionID.EndsWith(transactionId)).FirstOrDefault();
+        return (status != null);
+    }
+
+    private void ModalClosed(ModalResult modalResult)
+    {
+        OnRefresh.InvokeAsync(true);
+        //Modal.OnClose -= ModalClosed;
+    }
+
+    private bool Passed(string xml)
+    {
+        bool rc = false;
+
+        var xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xml);
+
+        var node = xmlDoc.SelectSingleNode("//Status");
+        if (node != null && node.InnerText != null)
+        {
+            rc = node.InnerText.Trim() == "P";
+        }
+
+
+        return rc;
+    }
+
+    private string ErrorMessage(string xml)
+    {
+        string rc = "";
+
+        var xmlDoc = new XmlDocument();
+        xmlDoc.LoadXml(xml);
+
+        var node = xmlDoc.SelectSingleNode("//Text");
+        if (node != null && node.InnerText != null)
+        {
+            rc = node.InnerText;
+        }
+
+        return rc;
+    }
+}
